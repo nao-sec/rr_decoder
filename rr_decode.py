@@ -8,17 +8,14 @@ def decode_b0747746(enc_data):
     xor_key = 1219836524
 
     for i in range(len(enc_data)):
-        for c in range(7):
-            part1_1 = xor_key >> 26
-            part1_2 = xor_key ^ part1_1
-            part1_3 = part1_2 >> 3
-            part1_4 = xor_key ^ part1_3
-            part1_5 = part1_4 & 1
-            part2_1 = 2 * xor_key
-            part3 = part1_5 | part2_1
-            xor_key = part3
-            xor_key += 1
-        dec_data.append(int.from_bytes(enc_data[i],  "little") ^ (xor_key % 256))
+        for _ in range(7):
+            x0 = (xor_key & 0x20000000) == 0x20000000
+            x1 = (xor_key & 8) == 8
+            x2 = xor_key & 1
+            x3 = 1 + (x0 ^ x1 ^ x2)
+            xor_key = (xor_key + xor_key) + x3
+        dec_data.append(int.from_bytes(enc_data[i], "little") ^ (xor_key % 256))
+
     return dec_data
 
 def decode_b25a6f00(enc_data):
@@ -57,16 +54,27 @@ def decode_f2a32072(enc_data):
     xor_key = 2079624803
 
     for i in range(len(enc_data)):
-        for c in range(7):
-            part1_1 = xor_key >> 27
-            part1_2 = xor_key ^ part1_1
-            part1_3 = part1_2 >> 3
-            part1_4 = xor_key ^ part1_3
-            part1_5 = part1_4 & 1
-            part2_1 = 2 * xor_key
-            part3 = part1_5 | part2_1
-            xor_key = part3
+        for _ in range(7):
+            x0 = (xor_key & 0x40000000) == 0x40000000
+            x1 = (xor_key & 8) == 8
+            x2 = xor_key & 1
+            x3 = x0 ^ x1 ^ x2
+            xor_key = (xor_key + xor_key) + x3
         dec_data.append(int.from_bytes(enc_data[i], "little") ^ (xor_key % 256))
+
+    return dec_data
+
+def decode_b2a46eff(enc_data):
+    print('[!] Type [b2a46eff] is Detected!')
+    print('[+] Decoding...')
+
+    dec_data = []
+
+    for i in range(len(enc_data)):
+        dec_data.append(int.from_bytes(enc_data[i],  "little") ^ 0xff)
+    
+    dec_data[1] = 0x5a
+    dec_data[2] = 0x90
 
     return dec_data
 
@@ -80,7 +88,8 @@ def main():
         [0xb0, 0x74, 0x77, 0x46],
         [0xb2, 0x5a, 0x6f, 0x00],
         [0xb2, 0xa6, 0x6d, 0xff],
-        [0xf2, 0xa3, 0x20, 0x72]
+        [0xf2, 0xa3, 0x20, 0x72],
+        [0xb2, 0xa4, 0x6e, 0xff]
     ]
 
     enc_data = []
@@ -105,6 +114,8 @@ def main():
         dec_data = decode_b2a66dff(enc_data)
     elif header == signature[3]:
         dec_data = decode_f2a32072(enc_data)
+    elif header == signature[4]:
+        dec_data = decode_b2a46eff(enc_data)
     else:
         print('[!] Error: Unknown Format')
         sys.exit(-1)
