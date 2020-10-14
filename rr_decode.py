@@ -78,6 +78,17 @@ def decode_b2a46eff(enc_data):
 
     return dec_data
 
+def decode_a9a46efe(enc_data):
+    print('[!] Type [a9a46efe] is Detected!')
+    print('[+] Decoding...')
+
+    dec_data = []
+
+    for i in range(len(enc_data)):
+        dec_data.append(((int.from_bytes(enc_data[i],  "little") ^ 0x7b) + 0x7b) % 0x100)
+    
+    return dec_data
+
 def main():
     args = sys.argv
     if len(args) != 3:
@@ -89,7 +100,8 @@ def main():
         [0xb2, 0x5a, 0x6f, 0x00],
         [0xb2, 0xa6, 0x6d, 0xff],
         [0xf2, 0xa3, 0x20, 0x72],
-        [0xb2, 0xa4, 0x6e, 0xff]
+        [0xb2, 0xa4, 0x6e, 0xff],
+        [0xa9, 0xa4, 0x6e, 0xfe]
     ]
 
     enc_data = []
@@ -116,6 +128,8 @@ def main():
         dec_data = decode_f2a32072(enc_data)
     elif header == signature[4]:
         dec_data = decode_b2a46eff(enc_data)
+    elif header == signature[5]:
+        dec_data = decode_a9a46efe(enc_data)
     else:
         print('[!] Error: Unknown Format')
         sys.exit(-1)
