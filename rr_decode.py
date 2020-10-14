@@ -85,7 +85,7 @@ def decode_a9a46efe(enc_data):
     dec_data = []
 
     for i in range(len(enc_data)):
-        dec_data.append(((int.from_bytes(enc_data[i],  "little") ^ 0x7b) + 0x7b) % 0x100)
+        dec_data.append(((int.from_bytes(enc_data[i],  "little") ^ 0x7b) + 0x7b) % 256)
     
     return dec_data
 
