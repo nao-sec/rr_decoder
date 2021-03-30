@@ -26,7 +26,7 @@ $ python3 rr_decoder sample/b2a66dff.bin b2a66dff.exe
 `rr_decoder` is open-sourced software licensed under the [MIT License](LICENSE)
 
 ## Change Log
-- 2021/03/20 - 0.1.4 - Add decode_95a2748e
+- 2021/03/30 - 0.1.4 - Add decode_95a2748e
 - 2020/10/28 - 0.1.3 - Add decode_945fdad8
 - 2020/10/14 - 0.1.2 - Add decode_a9a46efe
 - 2020/03/29 - 0.1.1 - Refactoring decode_b0747746 & decode_f2a32072
