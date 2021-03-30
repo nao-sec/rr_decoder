@@ -107,6 +107,24 @@ def decode_945fdad8(enc_data):
 
     return dec_data
 
+def decode_95a2748e(enc_data):
+    print('[!] Type [95a2748e] is Detected!')
+    print('[+] Decoding...')
+
+    dec_data = []
+    xor_key = 1404390492
+
+    for i in range(len(enc_data)):
+        for _ in range(7):
+            x0 = (xor_key & 0x20000000) == 0x20000000
+            x1 = (xor_key & 8) == 8
+            x2 = xor_key & 1
+            x3 = 1 + (x0 ^ x1 ^ x2)
+            xor_key = (xor_key + xor_key) + x3
+        dec_data.append(int.from_bytes(enc_data[i], "little") ^ (xor_key % 256))
+
+    return dec_data
+
 def main():
     args = sys.argv
     if len(args) != 3:
@@ -120,7 +138,8 @@ def main():
         [0xf2, 0xa3, 0x20, 0x72],
         [0xb2, 0xa4, 0x6e, 0xff],
         [0xa9, 0xa4, 0x6e, 0xfe],
-        [0x94, 0x5f, 0xda, 0xd8]
+        [0x94, 0x5f, 0xda, 0xd8],
+        [0x95, 0xa2, 0x74, 0x8e]
     ]
 
     enc_data = []
@@ -151,6 +170,8 @@ def main():
         dec_data = decode_a9a46efe(enc_data)
     elif header == signature[6]:
         dec_data = decode_945fdad8(enc_data)
+    elif header == signature[7]:
+        dec_data = decode_95a2748e(enc_data)
     else:
         print('[!] Error: Unknown Format')
         sys.exit(-1)
