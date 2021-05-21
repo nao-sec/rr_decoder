@@ -125,6 +125,38 @@ def decode_95a2748e(enc_data):
 
     return dec_data
 
+def custom_ksa_4da2ee67(key):
+    x = 0
+    y = 0
+    s = list(range(256))
+
+    for i in range(0x100):
+        y = ((key[x % len(key)] + s[i] + y) & 0x80e390ff) & 0xFF
+        s[i], s[y] = s[y], s[i]
+        x += 1
+    return s
+
+def custom_prga_4da2ee67(enc_data, s):
+    x = 0 
+    y = 0
+    for i in range(len(enc_data)):
+        x = ((x + 1)& 0x80e390ff) & 0xFF
+        y = ((s[x] + y) & 0x80e390ff) & 0xFF
+        s[x], s[y] = s[y], s[x]
+        enc_data[i] = int.from_bytes(enc_data[i], "little") ^ s[(s[x] + s[y]) & 0xFF]
+    return bytes(enc_data)
+
+def decode_4da2ee67(enc_data):
+    print('[!] Type [4da2ee67] is Detected!')
+    print('[+] Decoding...')
+
+    key = bytearray(b"123456")
+    s = custom_ksa_4da2ee67(key)
+    print(type(enc_data))
+    dec_data = custom_prga_4da2ee67(enc_data, s)
+
+    return dec_data
+
 def main():
     args = sys.argv
     if len(args) != 3:
@@ -139,7 +171,8 @@ def main():
         [0xb2, 0xa4, 0x6e, 0xff],
         [0xa9, 0xa4, 0x6e, 0xfe],
         [0x94, 0x5f, 0xda, 0xd8],
-        [0x95, 0xa2, 0x74, 0x8e]
+        [0x95, 0xa2, 0x74, 0x8e],
+        [0x4d, 0xa2, 0xee, 0x67]
     ]
 
     enc_data = []
@@ -172,6 +205,8 @@ def main():
         dec_data = decode_945fdad8(enc_data)
     elif header == signature[7]:
         dec_data = decode_95a2748e(enc_data)
+    elif header == signature[8]:
+        dec_data = decode_4da2ee67(enc_data)
     else:
         print('[!] Error: Unknown Format')
         sys.exit(-1)
