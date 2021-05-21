@@ -152,7 +152,6 @@ def decode_4da2ee67(enc_data):
 
     key = bytearray(b"123456")
     s = custom_ksa_4da2ee67(key)
-    print(type(enc_data))
     dec_data = custom_prga_4da2ee67(enc_data, s)
 
     return dec_data
