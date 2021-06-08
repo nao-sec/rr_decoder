@@ -125,25 +125,25 @@ def decode_95a2748e(enc_data):
 
     return dec_data
 
-def custom_ksa_4da2ee67(key):
+def rc4_ksa(key):
     x = 0
     y = 0
     s = list(range(256))
 
     for i in range(0x100):
-        y = ((key[x % len(key)] + s[i] + y) & 0x80e390ff) & 0xFF
+        y = (key[x % len(key)] + s[i] + y) & 0xff
         s[i], s[y] = s[y], s[i]
         x += 1
     return s
 
-def custom_prga_4da2ee67(enc_data, s):
+def rc4_prga(enc_data, s):
     x = 0 
     y = 0
     for i in range(len(enc_data)):
-        x = ((x + 1)& 0x80e390ff) & 0xFF
-        y = ((s[x] + y) & 0x80e390ff) & 0xFF
+        x = (x + 1) & 0xff
+        y = (s[x] + y) & 0xff
         s[x], s[y] = s[y], s[x]
-        enc_data[i] = int.from_bytes(enc_data[i], "little") ^ s[(s[x] + s[y]) & 0xFF]
+        enc_data[i] = int.from_bytes(enc_data[i], "little") ^ s[(s[x] + s[y]) & 0xff]
     return bytes(enc_data)
 
 def decode_4da2ee67(enc_data):
@@ -151,8 +151,8 @@ def decode_4da2ee67(enc_data):
     print('[+] Decoding...')
 
     key = bytearray(b"123456")
-    s = custom_ksa_4da2ee67(key)
-    dec_data = custom_prga_4da2ee67(enc_data, s)
+    s = rc4_ksa(key)
+    dec_data = rc4_prga(enc_data, s)
 
     return dec_data
 
