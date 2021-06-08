@@ -13,7 +13,7 @@ def decode_b0747746(enc_data):
             x1 = (xor_key & 8) == 8
             x2 = xor_key & 1
             x3 = 1 + (x0 ^ x1 ^ x2)
-            xor_key = (xor_key + xor_key) + x3
+            xor_key = ((xor_key + xor_key) + x3) & 0xFFFFFFFF
         dec_data.append(int.from_bytes(enc_data[i], "little") ^ (xor_key % 256))
 
     return dec_data
@@ -59,7 +59,7 @@ def decode_f2a32072(enc_data):
             x1 = (xor_key & 8) == 8
             x2 = xor_key & 1
             x3 = x0 ^ x1 ^ x2
-            xor_key = (xor_key + xor_key) + x3
+            xor_key = ((xor_key + xor_key) + x3) & 0xFFFFFFFF
         dec_data.append(int.from_bytes(enc_data[i], "little") ^ (xor_key % 256))
 
     return dec_data
@@ -102,7 +102,7 @@ def decode_945fdad8(enc_data):
             x1 = (xor_key & 8) == 8
             x2 = xor_key & 1
             x3 = 1 + (x0 ^ x1 ^ x2)
-            xor_key = (xor_key + xor_key) + x3
+            xor_key = ((xor_key + xor_key) + x3) & 0xFFFFFFFF
         dec_data.append(int.from_bytes(enc_data[i], "little") ^ (xor_key % 256))
 
     return dec_data
@@ -120,7 +120,7 @@ def decode_95a2748e(enc_data):
             x1 = (xor_key & 8) == 8
             x2 = xor_key & 1
             x3 = 1 + (x0 ^ x1 ^ x2)
-            xor_key = (xor_key + xor_key) + x3
+            xor_key = ((xor_key + xor_key) + x3) & 0xFFFFFFFF
         dec_data.append(int.from_bytes(enc_data[i], "little") ^ (xor_key % 256))
 
     return dec_data
