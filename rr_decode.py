@@ -166,6 +166,16 @@ def decode_8291706f(enc_data):
 
     return dec_data
 
+def decode_614a860c(enc_data):
+    print('[!] Type [614a860c] is Detected!')
+    print('[+] Decoding...')
+
+    key = bytearray(b"923hrg")
+    s = rc4_ksa(key)
+    dec_data = rc4_prga(enc_data, s)
+
+    return dec_data
+
 def main():
     args = sys.argv
     if len(args) != 3:
@@ -182,7 +192,8 @@ def main():
         [0x94, 0x5f, 0xda, 0xd8],
         [0x95, 0xa2, 0x74, 0x8e],
         [0x4d, 0xa2, 0xee, 0x67],
-        [0x82, 0x91, 0x70, 0x6f]
+        [0x82, 0x91, 0x70, 0x6f],
+        [0x61, 0x4a, 0x86, 0x0c]
     ]
 
     enc_data = []
@@ -219,6 +230,8 @@ def main():
         dec_data = decode_4da2ee67(enc_data)
     elif header == signature[9]:
         dec_data = decode_8291706f(enc_data)
+    elif header == signature[10]:
+        dec_data = decode_614a860c(enc_data)
     else:
         print('[!] Error: Unknown Format')
         sys.exit(-1)
