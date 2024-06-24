@@ -1,7 +1,7 @@
 import sys
 
 def decode_b0747746(enc_data):
-    print('[!] Type [b0747746] is Detected!')
+    print('[!] Type [b0747746] is detected!')
     print('[+] Decoding...')
 
     dec_data = []
@@ -19,7 +19,7 @@ def decode_b0747746(enc_data):
     return dec_data
 
 def decode_b25a6f00(enc_data):
-    print('[!] Type [b25a6f00] is Detected!')
+    print('[!] Type [b25a6f00] is detected!')
     print('[+] Decoding...')
 
     dec_data = []
@@ -33,7 +33,7 @@ def decode_b25a6f00(enc_data):
     return dec_data
 
 def decode_b2a66dff(enc_data):
-    print('[!] Type [b2a66dff] is Detected!')
+    print('[!] Type [b2a66dff] is detected!')
     print('[+] Decoding...')
 
     dec_data = []
@@ -47,7 +47,7 @@ def decode_b2a66dff(enc_data):
     return dec_data
 
 def decode_f2a32072(enc_data):
-    print('[!] Type [f2a32072] is Detected!')
+    print('[!] Type [f2a32072] is detected!')
     print('[+] Decoding...')
 
     dec_data = []
@@ -65,7 +65,7 @@ def decode_f2a32072(enc_data):
     return dec_data
 
 def decode_b2a46eff(enc_data):
-    print('[!] Type [b2a46eff] is Detected!')
+    print('[!] Type [b2a46eff] is detected!')
     print('[+] Decoding...')
 
     dec_data = []
@@ -79,7 +79,7 @@ def decode_b2a46eff(enc_data):
     return dec_data
 
 def decode_a9a46efe(enc_data):
-    print('[!] Type [a9a46efe] is Detected!')
+    print('[!] Type [a9a46efe] is detected!')
     print('[+] Decoding...')
 
     dec_data = []
@@ -90,7 +90,7 @@ def decode_a9a46efe(enc_data):
     return dec_data
 
 def decode_945fdad8(enc_data):
-    print('[!] Type [945fdad8] is Detected!')
+    print('[!] Type [945fdad8] is detected!')
     print('[+] Decoding...')
 
     dec_data = []
@@ -108,7 +108,7 @@ def decode_945fdad8(enc_data):
     return dec_data
 
 def decode_95a2748e(enc_data):
-    print('[!] Type [95a2748e] is Detected!')
+    print('[!] Type [95a2748e] is detected!')
     print('[+] Decoding...')
 
     dec_data = []
@@ -147,7 +147,7 @@ def rc4_prga(enc_data, s):
     return bytes(enc_data)
 
 def decode_4da2ee67(enc_data):
-    print('[!] Type [4da2ee67] is Detected!')
+    print('[!] Type [4da2ee67] is detected!')
     print('[+] Decoding...')
 
     key = bytearray(b"123456")
@@ -157,7 +157,7 @@ def decode_4da2ee67(enc_data):
     return dec_data
 
 def decode_8291706f(enc_data):
-    print('[!] Type [8291706f] is Detected!')
+    print('[!] Type [8291706f] is detected!')
     print('[+] Decoding...')
 
     key = bytearray(b"2YlK77")
@@ -167,7 +167,7 @@ def decode_8291706f(enc_data):
     return dec_data
 
 def decode_614a860c(enc_data):
-    print('[!] Type [614a860c] is Detected!')
+    print('[!] Type [614a860c] is detected!')
     print('[+] Decoding...')
 
     key = bytearray(b"923hrg")
@@ -177,10 +177,20 @@ def decode_614a860c(enc_data):
     return dec_data
 
 def decode_0f7850ba(enc_data):
-    print('[!] Type [614a860c] is Detected!')
+    print('[!] Type [614a860c] is detected!')
     print('[+] Decoding...')
 
     key = bytearray(b"c34H4y")
+    s = rc4_ksa(key)
+    dec_data = rc4_prga(enc_data, s)
+
+    return dec_data
+
+def decode_8291986f(enc_data):
+    print('[!] Type [8291986f] is detected!')
+    print('[+] Decoding...')
+
+    key = bytearray(b"2YlK77")
     s = rc4_ksa(key)
     dec_data = rc4_prga(enc_data, s)
 
@@ -204,7 +214,8 @@ def main():
         [0x4d, 0xa2, 0xee, 0x67],
         [0x82, 0x91, 0x70, 0x6f],
         [0x61, 0x4a, 0x86, 0x0c],
-        [0x0f, 0x78, 0x50, 0xba]
+        [0x0f, 0x78, 0x50, 0xba],
+        [0x82, 0x91, 0x98, 0x6f]
     ]
 
     enc_data = []
@@ -245,6 +256,8 @@ def main():
         dec_data = decode_614a860c(enc_data)
     elif header == signature[11]:
         dec_data = decode_0f7850ba(enc_data)
+    elif header == signature[12]:
+        dec_data = decode_8291986f(enc_data)
     else:
         print('[!] Error: Unknown Format')
         sys.exit(-1)
