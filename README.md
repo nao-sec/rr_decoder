@@ -16,6 +16,7 @@ The encodings that can be decoded are:
 - B2 A6 6D FF
 - F2 A3 20 72
 - 82 91 98 6F
+- 23 33 F7 65
 
 ## Usage
 ```
@@ -31,6 +32,7 @@ $ python3 rr_decoder sample/b2a66dff.bin b2a66dff.exe
 `rr_decoder` is open-sourced software licensed under the [MIT License](LICENSE)
 
 ## Change Log
+- 2024/09/26 - 0.1.10 - Add decode_2333f765
 - 2024/06/24 - 0.1.9 - Add decode_8291986f
 - 2024/01/10 - 0.1.8 - Add decode_0f7850ba
 - 2024/01/04 - 0.1.7 - Add decode_614a860c

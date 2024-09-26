@@ -196,6 +196,18 @@ def decode_8291986f(enc_data):
 
     return dec_data
 
+def decode_2333f765(enc_data):
+    print('[!] Type [2333f765] is detected!')
+    print('[+] Decoding...')
+
+    key = bytearray(b"nigerdi")
+    dec_data = []
+
+    for i in range(len(enc_data)):
+        dec_data.append(int.from_bytes(enc_data[i],  "little") ^ key[i % len(key)])
+
+    return dec_data
+
 def main():
     args = sys.argv
     if len(args) != 3:
@@ -215,7 +227,8 @@ def main():
         [0x82, 0x91, 0x70, 0x6f],
         [0x61, 0x4a, 0x86, 0x0c],
         [0x0f, 0x78, 0x50, 0xba],
-        [0x82, 0x91, 0x98, 0x6f]
+        [0x82, 0x91, 0x98, 0x6f],
+        [0x23, 0x33, 0xf7, 0x65]
     ]
 
     enc_data = []
@@ -258,6 +271,8 @@ def main():
         dec_data = decode_0f7850ba(enc_data)
     elif header == signature[12]:
         dec_data = decode_8291986f(enc_data)
+    elif header == signature[13]:
+        dec_data = decode_2333f765(enc_data)
     else:
         print('[!] Error: Unknown Format')
         sys.exit(-1)
